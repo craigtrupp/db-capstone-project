@@ -64,32 +64,13 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `LittleLemonDB`.`MenuItems`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`MenuItems` (
-  `MenuItemID` INT NOT NULL,
-  `Course` VARCHAR(150) NOT NULL,
-  `Starter` VARCHAR(150) NOT NULL,
-  `Desert` VARCHAR(150) NOT NULL,
-  PRIMARY KEY (`MenuItemID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `LittleLemonDB`.`Menu`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Menu` (
   `MenuID` INT NOT NULL,
   `MenuName` VARCHAR(150) NOT NULL,
   `CuisineCategoyr` VARCHAR(150) NOT NULL,
-  `MenuItemID` INT NOT NULL,
-  PRIMARY KEY (`MenuID`),
-  INDEX `menu_menuitem_idx` (`MenuItemID` ASC) VISIBLE,
-  CONSTRAINT `menu_menuitem`
-    FOREIGN KEY (`MenuItemID`)
-    REFERENCES `LittleLemonDB`.`MenuItems` (`MenuItemID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
+  PRIMARY KEY (`MenuID`))
 ENGINE = InnoDB;
 
 
@@ -116,6 +97,25 @@ CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`Orders` (
     REFERENCES `LittleLemonDB`.`Menu` (`MenuID`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `LittleLemonDB`.`MenuItems`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `LittleLemonDB`.`MenuItems` (
+  `MenuItemID` INT NOT NULL,
+  `Course` VARCHAR(150) NOT NULL,
+  `Starter` VARCHAR(150) NOT NULL,
+  `Desert` VARCHAR(150) NOT NULL,
+  `BaseMenuID` INT NOT NULL,
+  PRIMARY KEY (`MenuItemID`),
+  INDEX `mnitm_menuid_idx` (`BaseMenuID` ASC) VISIBLE,
+  CONSTRAINT `mnitm_menuid`
+    FOREIGN KEY (`BaseMenuID`)
+    REFERENCES `LittleLemonDB`.`Menu` (`MenuID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
